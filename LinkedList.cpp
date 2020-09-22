@@ -17,6 +17,11 @@ public:
 		data_ = "key= " + to_string(key_);
 		next_ = nullptr;
 	}
+
+	~Element()
+	{
+		delete next_;
+	}
 };
 
 class LinkedList
