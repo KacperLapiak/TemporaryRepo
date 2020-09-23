@@ -22,7 +22,7 @@ public:
 class LinkedList
 {
 private:
-	Element* head_;
+	Element* head_ = nullptr;
 
 public:
 	~LinkedList()
