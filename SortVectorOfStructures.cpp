@@ -34,7 +34,7 @@ int main()
 	sort(v.begin(), v.end());
 	cout << endl;
 
-	for (auto x : v)
+	for (Entry x : v)
 		cout << x.key_ << " | " << x.str_ << endl;
 
 	cin.get();
