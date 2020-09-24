@@ -7,87 +7,62 @@ template <typename T, int n>
 class vector
 {
 private:
-    T* v_ = nullptr;
-    int size_ = 0;
+    T* v_;
+    size_t size_;
 
 public:
     explicit vector()
     {
         if (n < 0)
-            throw string{"Negative_size"};
+            throw invalid_argument{ "negative_value" };
         v_ = new T[n];
         size_ = n;
     }
-    ~vector()
-    {
-        delete[] v_;
-    }
-    int size() const { return size_; }
-    T& operator[](int i) 
-    {
-        if (i < 0 || i >= size_)
-            throw string{"out_of_range"};
+    ~vector() { delete[] v_; }
+    size_t size() { return size_; }
+    T& operator[] (size_t i) 
+    { 
+        if (i < 0 || i >= size())
+            throw out_of_range{ "out_of_range" };
+
         return v_[i]; 
     }
-    const T& operator[](int i) const { return v_[i]; }
-
-    T* begin()
-    {
-        return size_ ? &v_[0] : nullptr;
-    }
-    T* end()
-    {
-        return size_ ? &v_[size_] : nullptr;
-    }
-};
-
-template <typename T>
-double sum(T& c)
-{
-    double sum = 0;
-    for (auto x : c)
-        sum += x;
-    return sum;
-}
-
-template <typename T>
-class functor
-{
-private:
-    T val_ = 0;
-
-public:
-    functor(T val) : val_(val)
-    {
-
-    }
-
-    bool operator()(const T& val) const 
-    {
-        return val_ < val;
-    }
+    T* begin() { return &v_[0]; }
+    T* end() { return &v_[size_]; }
 };
 
 int main()
 {
     vector<int, 10> v;
+
     for (int i = 0; i < v.size(); i++)
         v[i] = i;
 
     for (int i = 0; i < v.size(); i++)
         cout << v[i] << " ";
-
-    cout << "\n";
+    cout << endl;
 
     for (int x : v)
         cout << x << " ";
+    cout << endl;
 
-    cout << "\n" << sum(v) << "\n";
+    try 
+    {
+        cout << v[10];
+    }
+    catch (out_of_range &err)
+    {
+        cout << err.what();
+    }
 
-    functor<int> f = 10;
-    cout << f(100) << "\n";
+    int val = 4;
+    int cntr = count_if(v.begin(), v.end(), [&val](int a) { return a > val; });
+    cout << endl << cntr << endl;
 
-    cout << count_if(v.begin(), v.end(), [&](int a){ return a > 5; });
+    reverse(v.begin(), v.end());
+    for (int x : v)
+        cout << x << " ";
+    cout << endl;
 
     cin.get();
 }
